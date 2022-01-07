@@ -1,0 +1,364 @@
+<?php
+session_start();
+
+
+$conn=new mysqli('localhost','root','','emp-management-sys') or die(mysqli_error($mysqli));
+
+$id=0;
+$vRewardID ='';
+$vRewardTitle='';
+$vEmployeeName='';
+$vYear='';
+$vRewardType='';
+$vCurrentDate='';
+$sql1 = "SELECT * from `emp_registration` ORDER BY empid ASC" ;
+$result1 = mysqli_query($conn, $sql1);
+
+
+$sql="SELECT * FROM add_reward";
+    $sqldata=mysqli_query($conn,$sql)or die('error getting');
+    $row=mysqli_fetch_array($sqldata,MYSQLI_ASSOC);
+
+if(isset($_GET['view'])){
+	$id=$_GET['view'];
+	$sql="SELECT * FROM add_reward where RewardID='$id'";
+    $sqldata=mysqli_query($conn,$sql)or die('error getting');
+    $row=mysqli_fetch_array($sqldata,MYSQLI_ASSOC);
+	
+	$vRewardID=$row['RewardID'];
+	$vRewardTitle=$row['RewardTitle'];
+	$vEmployeeName=$row['EmployeeName'];
+	$vYear=$row['Year'];
+	$vRewardType=$row['RewardType'];
+	$vCurrentDate=$row['CurrentDate'];
+	
+		
+}
+
+?>
+
+<html>
+<!--head-->
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--title-->
+<title>
+View Rewards update
+</title>
+    <!--external css style-->
+<link rel="stylesheet" href="bootstrap.min.css">
+    <!--script-->
+<script src="bootstrap/js/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<script src="bootstrap/js/bootstrap.min.js"></script>
+</head>
+    <!--style-->
+<style>
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  font-size:17px;
+}
+body{
+margin:0;
+padding:0;
+background-image:linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url(images/istockphoto-1223896865-612x612.jpg);
+background-size:cover;
+background-position:center;
+font-family:sans-serif;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: 100% 100%;
+}
+
+.form {
+  position: relative;
+  margin: 50px auto;
+  width: 500px;
+  height:850px;
+  padding: 33px 25px 29px;
+  background: white;
+  border-bottom: 1px solid #c4c4c4;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
+.form:before, .form:after {
+  content: '';
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: inherit;
+  border-bottom: 1px solid #d2d2d2;
+  border-radius: 4px;
+}
+.form:after {
+  bottom: 3px;
+  border-color: #dcdcdc;
+}
+
+.form-title {
+  margin: -25px -25px 25px;
+  padding: 15px 25px;
+  line-height: 35px;
+  font-size: 26px;
+  font-weight: 300;
+  color: #aaa;
+  text-align: center;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.75);
+  background: #f7f7f7;
+}
+
+
+
+.form-input {
+  width: 100%;
+  height: 50px;
+  margin-bottom: 25px;
+  padding: 0 15px 2px;
+  font-size: 17px;
+  background: white;
+  border: 2px solid #ebebeb;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 -2px #ebebeb;
+  box-shadow: inset 0 -2px #ebebeb;
+}
+.form-input:focus {
+  border-color: #62c2e4;
+  outline: none;
+  -webkit-box-shadow: inset 0 -2px #62c2e4;
+  box-shadow: inset 0 -2px #62c2e4;
+}
+.lt-ie9 .form-input {
+  line-height: 20px;
+}
+
+#submit {
+  position: relative;
+  vertical-align: top;
+  width: 200px;
+  height: 35px;
+  padding: 0;
+  font-size: 22px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #f0776c;
+  border: 0;
+  border-bottom: 2px solid #d76b60;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #d76b60;
+  box-shadow: inset 0 -2px #d76b60;
+  align="center";
+}
+#submit:active {
+  top: 1px;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  background-color:green;
+  color:black;
+}
+
+
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.form-title:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: #c4e17f;
+  border-radius: 5px 5px 0 0;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+
+}
+</style
+
+        <!--body-->
+<body>
+
+
+<div class="registerbox">
+
+
+
+<form action=" " method="post" class="form">
+<h1 class="form-title">REWARDs INFO</h1>
+<table>
+
+<tr>
+<td>
+<p> RewardID:</p>
+</td>
+<td>
+<input type="text" name="id" value= "<?php echo $vRewardID ;?>" disabled class="form-input">
+</td>
+</tr>
+
+<tr>
+<td>
+<p>RewardTitle:</p>
+</td>
+<td>
+<input type="text" name="ProjectName" value= "<?php echo $vRewardTitle;?>"  class="form-input">
+</td>
+</tr>
+
+<tr>
+<td>
+<p>EmployeeName:</p>
+</td>
+<td>
+
+ <select class="form-input" name="fullname" id="EmployeeName"  value= "<?php echo $vEmployeeName;?>">                    
+                            <?php 
+                               while ($employee = mysqli_fetch_assoc($result1)) {                                        
+                                    $empid=$employee['empid'];
+                                    $fname=$employee['firstname'];
+                                    $lname=$employee['lastname'];
+                                    $fullname=$fname." ".$lname;                
+                                    echo '<option  value="'.$fullname.'">'.$fullname.' </option>';                      
+                                 }
+                            ?>
+                        </select>
+</td>
+</tr>
+
+<tr>
+<td>
+<p>Year:</p>
+</td>
+<td>
+
+
+  <select class="form-input" name="Year" id="floatingSelect" value= "<?php echo $vYear;?>" >
+                          <option selected disabled>Choose...</option>
+                            <option value="2015">2015</option>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+
+                          </select>
+</td>
+</tr>
+
+<tr>
+<td>
+<p>RewardType:</p>
+</td>
+<td>
+
+   <select  name="RewardType" value= "<?php echo $vRewardType;?>" class="form-input">
+                          <option selected disabled>Choose...</option>
+                            <option value="Bronze">Bronze</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Platinum">Platinum</option>
+                            <option value="Diamond">Diamond</option>
+                            
+
+                          </select>
+</td>
+</tr>
+
+<tr>
+<td>
+<p>CurrentDate:</p>
+</td>
+<td>
+<input type="date" name="DeadLine" value= "<?php echo $vCurrentDate ;?>"  class="form-input" >
+</td>
+</tr>
+
+
+
+
+
+
+
+
+
+</table>
+<br>
+
+
+<button type="submit" class="btn btn-success" name="submit" id="submit" style="margin-left:75px;">Update</button>
+</form>
+</div>
+	
+<?php
+
+$mysqli=new mysqli('localhost','root','','emp-management-sys') or die(mysqli_error($mysqli));
+
+
+if(isset($_POST['submit'])){
+	
+	$vRewardID=$_POST['id'];
+	$vCurrentDate =$_POST['CurrentDate'];
+	$vRewardTitle=$_POST['RewardTitle'];
+$vEmployeeName=$_POST['EmployeeName'];
+$vYear=$_POST['Year'];
+$vRewardType=$_POST['RewardType'];
+
+
+	
+	
+	
+	
+	$mysqli->query("UPDATE add_reward SET CurrentDate='$vCurrentDate',RewardTitle=$vRewardTitle,EmployeeName=$vEmployeeName,Year=$vYear,RewardType=$vRewardType where RewardID=$id")or die($mysqli->error);
+	
+		   echo ("<SCRIPT LANGUAGE='JavaScript'>
+           window.alert('Records of rewards has been updated successfully.')
+            window.location.href='a_viewrewards_update.php';
+            </SCRIPT>");
+		
+	
+
+}
+?>
+
+</body>
+</html>
